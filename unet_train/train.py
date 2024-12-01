@@ -1,9 +1,9 @@
 import torch
 import torchvision
-from torch.utils.data import DataLoader
 from torch.nn import MSELoss
+from torch.utils.data import DataLoader
 
-from simple_unet.simple_unet import SimpleUNet
+from diffusion.components.unet import UNet
 
 
 def get_data_loader(batch_size: int = 120) -> DataLoader:
@@ -23,7 +23,7 @@ def corrupt(x, amount):
     return x * (1 - amount) + amount * noise
 
 
-def train(net: SimpleUNet, train_dataloader: DataLoader, epochs: int = 3):
+def train(net: UNet, train_dataloader: DataLoader, epochs: int = 3):
     losses = []
     loss_f = MSELoss()
     optimizer = torch.optim.Adam(net.parameters(), lr=1e-3)
@@ -48,7 +48,7 @@ def train(net: SimpleUNet, train_dataloader: DataLoader, epochs: int = 3):
 
 
 if __name__ == "__main__":
-    unet = SimpleUNet()
+    unet = UNet()
     train_dataloader = get_data_loader()
     train(unet, train_dataloader, 6)
     # my avg loss with these params:

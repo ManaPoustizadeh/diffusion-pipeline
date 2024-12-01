@@ -1,10 +1,7 @@
 from torch import nn
-from torch.utils.data import DataLoader
-import torch
-import torchvision
 
 
-class SimpleUNet(nn.Module):
+class UNet(nn.Module):
     def __init__(self, in_channels: int = 1, out_channels: int = 1):
         super().__init__()
         # define upsample & downsample layers
@@ -40,11 +37,6 @@ class SimpleUNet(nn.Module):
             if i < len(self.up_layers) - 1:
                 x = self.up_sample(x)
                 x += skip_connections.pop()
-        # for i, l in enumerate(self.up_layers):
-        #     if i > 0:  # For all except the first up layer
-        #         x = self.up_sample(x)  # Upscale
-        #         x += skip_connections.pop()  # Fetching stored output (skip connection)
-        #     x = self.act_func(l(x))
         return x
 
 
